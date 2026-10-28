@@ -151,10 +151,10 @@ st.markdown(
         background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.08) 0%, rgba(6, 12, 24, 0.95) 75%);
         border: 1px solid rgba(0, 242, 254, 0.25);
         border-radius: 8px;
-        padding: 6px 10px;
-        margin: 6px 0 8px 0;
-        height: 125px;
-        max-height: 125px;
+        padding: 8px 10px;
+        margin: 4px 0 6px 0;
+        height: 180px;
+        max-height: 180px;
         box-sizing: border-box;
         overflow: hidden;
     }
@@ -162,12 +162,12 @@ st.markdown(
     .car-display-img {
         display: block;
         margin: 0 auto;
-        max-height: 112px;
-        max-width: 92%;
+        max-height: 165px;
+        max-width: 95%;
         width: auto;
         height: auto;
         object-fit: contain;
-        filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.4));
+        filter: drop-shadow(0 0 14px rgba(0, 242, 254, 0.45));
         pointer-events: none;
         user-select: none;
     }
@@ -177,8 +177,8 @@ st.markdown(
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 5px;
-        margin-bottom: 8px;
+        gap: 4px;
+        margin-bottom: 4px;
         white-space: nowrap;
         flex-wrap: nowrap;
     }
@@ -186,8 +186,8 @@ st.markdown(
     .hud-chip {
         display: inline-block;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.68rem;
-        padding: 3px 8px;
+        font-size: 0.66rem;
+        padding: 2px 7px;
         background: rgba(0, 242, 254, 0.08);
         border: 1px solid rgba(0, 242, 254, 0.25);
         border-radius: 4px;
@@ -291,7 +291,7 @@ car_database = {
         "max_payload_kg": 400,
         "battery_capacity_kwh": 30.2,
         "max_speed_kmh": 120,
-        "image": "nexon_ev.png",
+        "image": "nexon_ev.png",  # Transparent PNG of the Tata Nexon EV
     },
     "MG ZS EV": {
         "base_weight_kg": 1570,
@@ -312,7 +312,7 @@ car_database = {
         "max_payload_kg": 520,
         "battery_capacity_kwh": 72.6,
         "max_speed_kmh": 185,
-        "image": "ioniq5.png",
+        "image": "hyundai-ioniq_ev.png",
     },
 }
 
@@ -494,6 +494,8 @@ with col_center:
     car_img_target = car_specs.get("image")
     if car_img_target and os.path.exists(car_img_target):
         active_car_img_path = car_img_target
+    elif os.path.exists("ev_car.png"):
+        active_car_img_path = "ev_car.png"
     elif os.path.exists("edited-image.png"):
         active_car_img_path = "edited-image.png"
     elif os.path.exists("car_image.png"):
@@ -527,15 +529,14 @@ with col_center:
     )
 
     # 4. Inline Payload & Total Weight Header
-    # Pre-read current payload from session state or default
     current_payload_preview = st.session_state.get("slider_payload", 75)
     current_total_weight = car_specs["base_weight_kg"] + current_payload_preview
 
     st.markdown(
         f"""
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; margin-bottom: 2px;">
-            <span style="font-size: 0.76rem; font-weight: 600; color: #a4bede;">PAYLOAD WEIGHT (KG)</span>
-            <span style="font-size: 0.74rem; font-family: 'JetBrains Mono', monospace; color: #8ba2c4;">TOTAL: <strong style="color: #00f2fe; font-size: 0.82rem;">{current_total_weight} kg</strong></span>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 0px; margin-bottom: 0px;">
+            <span style="font-size: 0.74rem; font-weight: 600; color: #a4bede;">PAYLOAD (KG)</span>
+            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: #8ba2c4;">TOTAL: <strong style="color: #00f2fe; font-size: 0.8rem;">{current_total_weight} kg</strong></span>
         </div>
         """,
         unsafe_allow_html=True,
