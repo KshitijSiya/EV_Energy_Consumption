@@ -9,7 +9,7 @@ import streamlit as st
 import xgboost as xgb
 
 # -----------------------------------------------------------------------------
-# 1. PAGE CONFIG & ZERO-SCROLL HUD STYLING
+# 1. PAGE CONFIG & ZERO-SCROLL BALANCED HUD STYLING
 # -----------------------------------------------------------------------------
 st.set_page_config(
     page_title="EV Powertrain Telemetry & Energy Predictor",
@@ -23,17 +23,17 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&display=swap');
 
-    /* Global Dark Automotive Background */
+    /* Global Dark Automotive Cockpit Theme */
     html, body, [data-testid="stAppViewContainer"] {
-        background: radial-gradient(circle at 50% 15%, #0e172a 0%, #060913 100%) !important;
+        background: radial-gradient(circle at 50% 12%, #0e172a 0%, #060913 100%) !important;
         color: #e2ecf8 !important;
         font-family: 'Chakra Petch', sans-serif !important;
     }
 
-    /* Container padding balanced for a clean single-page layout */
+    /* Balanced padding so the page fills the full viewport without scrolling */
     .block-container {
-        padding-top: 0.6rem !important;
-        padding-bottom: 0rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
         padding-left: 1.2rem !important;
         padding-right: 1.2rem !important;
         max-width: 100% !important;
@@ -45,20 +45,6 @@ st.markdown(
 
     footer {
         display: none !important;
-    }
-
-    /* Force full viewport height and distribute space */
-    [data-testid="stAppViewContainer"] > .main {
-        min-height: 100vh !important;
-    }
-
-    [data-testid="stVerticalBlock"] {
-        gap: 0.35rem !important;
-    }
-
-    /* Remove bottom padding from main view */
-    .appview-container {
-        padding-bottom: 0 !important;
     }
 
     /* Disable Streamlit full-screen icon on images */
@@ -76,7 +62,7 @@ st.markdown(
         border: 1px solid rgba(0, 242, 254, 0.28);
         border-radius: 8px;
         padding: 6px 18px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         box-shadow: 0 0 18px rgba(0, 242, 254, 0.08);
     }
 
@@ -104,7 +90,7 @@ st.markdown(
 
     /* Master Column Panel Headers */
     .hud-panel-header {
-        font-size: 0.8rem;
+        font-size: 0.82rem;
         font-weight: 700;
         letter-spacing: 0.14em;
         color: #00f2fe;
@@ -117,65 +103,58 @@ st.markdown(
         align-items: center;
     }
 
-    /* Input Labels and Compact Spacing */
+    /* Comfortable Widget Spacing to fill vertical space nicely */
     .stSlider {
-        margin-bottom: -4px !important;
-        margin-top: -2px !important;
+        margin-bottom: 6px !important;
     }
 
     .stSlider > label {
-        font-size: 0.76rem !important;
+        font-size: 0.77rem !important;
         font-weight: 600 !important;
         color: #a4bede !important;
         letter-spacing: 0.02em !important;
-        margin-bottom: -4px !important;
+        margin-bottom: 0px !important;
     }
 
     .stSelectbox {
-        margin-bottom: 0px !important;
-        margin-top: -2px !important;
+        margin-bottom: 4px !important;
     }
 
     .stSelectbox > label {
-        font-size: 0.76rem !important;
-        font-weight: 600 !important;
-        color: #a4bede !important;
-        margin-bottom: -2px !important;
-    }
-
-    .stRadio > label {
-        font-size: 0.76rem !important;
+        font-size: 0.77rem !important;
         font-weight: 600 !important;
         color: #a4bede !important;
         margin-bottom: 0px !important;
     }
 
-    .stRadio {
-        margin-top: -4px !important;
-        margin-bottom: -4px !important;
+    .stRadio > label {
+        font-size: 0.77rem !important;
+        font-weight: 600 !important;
+        color: #a4bede !important;
+        margin-bottom: 2px !important;
     }
 
     div[data-baseweb="select"] > div {
         background-color: #070d1a !important;
         border: 1px solid rgba(0, 242, 254, 0.35) !important;
         color: #ffffff !important;
-        font-size: 0.82rem !important;
-        min-height: 34px !important;
+        font-size: 0.83rem !important;
+        min-height: 35px !important;
         border-radius: 6px !important;
     }
 
-    /* Fixed-Height Centered Car Image Display */
+    /* Prominent Centered Car Display */
     .car-display-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.08) 0%, rgba(6, 12, 24, 0.95) 75%);
+        background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.09) 0%, rgba(6, 12, 24, 0.95) 75%);
         border: 1px solid rgba(0, 242, 254, 0.25);
         border-radius: 8px;
-        padding: 8px 10px;
-        margin: 4px 0 6px 0;
-        height: 180px;
-        max-height: 180px;
+        padding: 6px 10px;
+        margin: 4px 0 8px 0;
+        height: 215px;
+        max-height: 215px;
         box-sizing: border-box;
         overflow: hidden;
     }
@@ -183,8 +162,8 @@ st.markdown(
     .car-display-img {
         display: block;
         margin: 0 auto;
-        max-height: 165px;
-        max-width: 95%;
+        max-height: 200px;
+        max-width: 96%;
         width: auto;
         height: auto;
         object-fit: contain;
@@ -198,8 +177,8 @@ st.markdown(
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 4px;
-        margin-bottom: 4px;
+        gap: 6px;
+        margin-bottom: 8px;
         white-space: nowrap;
         flex-wrap: nowrap;
     }
@@ -207,8 +186,8 @@ st.markdown(
     .hud-chip {
         display: inline-block;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.66rem;
-        padding: 2px 7px;
+        font-size: 0.72rem;
+        padding: 3px 10px;
         background: rgba(0, 242, 254, 0.08);
         border: 1px solid rgba(0, 242, 254, 0.25);
         border-radius: 4px;
@@ -217,14 +196,36 @@ st.markdown(
         white-space: nowrap;
     }
 
+    /* Telemetry Info Cards for Lower Columns */
+    .telemetry-footer-card {
+        background: rgba(0, 242, 254, 0.04);
+        border: 1px solid rgba(0, 242, 254, 0.18);
+        border-radius: 6px;
+        padding: 8px 12px;
+        margin-top: 10px;
+        font-size: 0.73rem;
+        color: #8da4c4;
+    }
+
+    .telemetry-footer-title {
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: #00f2fe;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+        display: flex;
+        justify-content: space-between;
+    }
+
     /* Result Metric Cards */
     .metric-card {
         background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(9, 18, 36, 0.95) 100%);
         border: 1px solid rgba(0, 242, 254, 0.4);
         border-radius: 8px;
-        padding: 8px 14px;
-        margin-top: 6px;
-        margin-bottom: 6px;
+        padding: 10px 14px;
+        margin-top: 8px;
+        margin-bottom: 8px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(0, 242, 254, 0.06);
     }
 
@@ -232,9 +233,9 @@ st.markdown(
         background: linear-gradient(135deg, rgba(0, 255, 135, 0.1) 0%, rgba(9, 28, 24, 0.95) 100%);
         border: 1px solid rgba(0, 255, 135, 0.4);
         border-radius: 8px;
-        padding: 8px 14px;
-        margin-top: 6px;
-        margin-bottom: 6px;
+        padding: 10px 14px;
+        margin-top: 8px;
+        margin-bottom: 8px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(0, 255, 135, 0.06);
     }
 
@@ -312,7 +313,7 @@ car_database = {
         "max_payload_kg": 400,
         "battery_capacity_kwh": 30.2,
         "max_speed_kmh": 120,
-        "image": "nexon_ev.png",  # Transparent PNG of the Tata Nexon EV
+        "image": "nexon_ev.png",
     },
     "MG ZS EV": {
         "base_weight_kg": 1570,
@@ -511,7 +512,7 @@ with col_center:
     )
     car_specs = car_database[selected_car_name]
 
-    # Resolve Car Image: Car-specific image if present, else fallback to default assets
+    # Resolve Car Image: Car-specific image if present, else fallback
     car_img_target = car_specs.get("image")
     if car_img_target and os.path.exists(car_img_target):
         active_car_img_path = car_img_target
@@ -526,7 +527,7 @@ with col_center:
 
     car_b64 = get_image_base64(active_car_img_path)
 
-    # 2. Centered Car Silhouette with Fixed 125px Height
+    # 2. Prominent Centered Car Display (Height 215px)
     if car_b64:
         st.markdown(
             f"""
@@ -555,9 +556,9 @@ with col_center:
 
     st.markdown(
         f"""
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 0px; margin-bottom: 0px;">
-            <span style="font-size: 0.74rem; font-weight: 600; color: #a4bede;">PAYLOAD (KG)</span>
-            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: #8ba2c4;">TOTAL: <strong style="color: #00f2fe; font-size: 0.8rem;">{current_total_weight} kg</strong></span>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; margin-bottom: 2px;">
+            <span style="font-size: 0.76rem; font-weight: 600; color: #a4bede;">PAYLOAD (KG)</span>
+            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: #8ba2c4;">TOTAL: <strong style="color: #00f2fe; font-size: 0.82rem;">{current_total_weight} kg</strong></span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -585,6 +586,33 @@ with col_center:
     )
     driving_mode_map = {"Eco": 1, "Normal": 2, "Sport": 3}
     driving_mode_val = driving_mode_map[driving_mode_str]
+
+    payload_utilization_pct = (payload_kg / float(car_specs["max_payload_kg"])) * 100.0
+    mode_descriptions = {
+        "Eco": "High Regen | Capped Throttle Profile",
+        "Normal": "Standard Energy Profile | Adaptive Regen",
+        "Sport": "Instant Peak Torque | Aggressive Draw",
+    }
+
+    # Center Column Bottom Telemetry Status Card (Balances height)
+    st.markdown(
+        f"""
+        <div class="telemetry-footer-card">
+            <div class="telemetry-footer-title">
+                <span>CHASSIS & POWERTRAIN PROFILE</span>
+                <span style="color: #00ff87;">LOAD: {payload_utilization_pct:.0f}%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;">
+                <span>CURB MASS: <strong style="color: #00f2fe;">{total_vehicle_weight_kg} kg</strong></span>
+                <span style="color: #a0c2e6;">MAP: <strong style="color: #00ff87;">{driving_mode_str.upper()}</strong></span>
+            </div>
+            <div style="font-size: 0.68rem; color: #738ca8; margin-top: 2px;">
+                {mode_descriptions[driving_mode_str]}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # =============================================================================
 # LEFT COLUMN (TELEMETRY & ENVIRONMENT — ALL 10 INPUTS)
@@ -697,6 +725,31 @@ with col_left:
             step=0.5,
             help="Ambient aerodynamic wind velocity.",
         )
+
+    # Physical Estimation of Aero Drag Power: P = 0.5 * rho * Cd * A * v_rel^2 * v
+    v_mps = speed_kmh / 3.6
+    relative_v = v_mps + (wind_speed_val * 0.5)
+    est_aero_kw = round(0.5 * 1.225 * 0.32 * 2.2 * (relative_v ** 2) * v_mps / 1000.0, 1)
+
+    # Left Column Bottom Telemetry Status Card (Balances height)
+    st.markdown(
+        f"""
+        <div class="telemetry-footer-card">
+            <div class="telemetry-footer-title">
+                <span>AERODYNAMIC & ENVIRONMENTAL FORCES</span>
+                <span style="color: #00f2fe;">ACTIVE SENSORS</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;">
+                <span>AERO DRAG POWER: <strong style="color: #00f2fe;">{est_aero_kw} kW</strong></span>
+                <span>INCLINE: <strong style="color: {'#ff8c00' if slope_pct > 0 else '#00ff87' if slope_pct < 0 else '#a0c2e6'};">{slope_pct:+d}%</strong></span>
+            </div>
+            <div style="font-size: 0.68rem; color: #738ca8; margin-top: 2px;">
+                Atmosphere: {weather_str} | Traffic Density: {traffic_str}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # =============================================================================
 # RIGHT COLUMN (BATTERY STATE & ML RESULTS / TWO-WAY ESTIMATOR)
