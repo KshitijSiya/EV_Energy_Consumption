@@ -33,7 +33,7 @@ st.markdown(
     /* Container padding balanced for a clean single-page layout */
     .block-container {
         padding-top: 0.6rem !important;
-        padding-bottom: 0.6rem !important;
+        padding-bottom: 0rem !important;
         padding-left: 1.2rem !important;
         padding-right: 1.2rem !important;
         max-width: 100% !important;
@@ -45,6 +45,20 @@ st.markdown(
 
     footer {
         display: none !important;
+    }
+
+    /* Force full viewport height and distribute space */
+    [data-testid="stAppViewContainer"] > .main {
+        min-height: 100vh !important;
+    }
+
+    [data-testid="stVerticalBlock"] {
+        gap: 0.35rem !important;
+    }
+
+    /* Remove bottom padding from main view */
+    .appview-container {
+        padding-bottom: 0 !important;
     }
 
     /* Disable Streamlit full-screen icon on images */
@@ -105,7 +119,8 @@ st.markdown(
 
     /* Input Labels and Compact Spacing */
     .stSlider {
-        margin-bottom: 0px !important;
+        margin-bottom: -4px !important;
+        margin-top: -2px !important;
     }
 
     .stSlider > label {
@@ -113,25 +128,31 @@ st.markdown(
         font-weight: 600 !important;
         color: #a4bede !important;
         letter-spacing: 0.02em !important;
-        margin-bottom: -2px !important;
+        margin-bottom: -4px !important;
     }
 
     .stSelectbox {
-        margin-bottom: 2px !important;
+        margin-bottom: 0px !important;
+        margin-top: -2px !important;
     }
 
     .stSelectbox > label {
         font-size: 0.76rem !important;
         font-weight: 600 !important;
         color: #a4bede !important;
-        margin-bottom: 0px !important;
+        margin-bottom: -2px !important;
     }
 
     .stRadio > label {
         font-size: 0.76rem !important;
         font-weight: 600 !important;
         color: #a4bede !important;
-        margin-bottom: 2px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .stRadio {
+        margin-top: -4px !important;
+        margin-bottom: -4px !important;
     }
 
     div[data-baseweb="select"] > div {
@@ -201,9 +222,9 @@ st.markdown(
         background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(9, 18, 36, 0.95) 100%);
         border: 1px solid rgba(0, 242, 254, 0.4);
         border-radius: 8px;
-        padding: 10px 14px;
-        margin-top: 8px;
-        margin-bottom: 8px;
+        padding: 8px 14px;
+        margin-top: 6px;
+        margin-bottom: 6px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(0, 242, 254, 0.06);
     }
 
@@ -211,9 +232,9 @@ st.markdown(
         background: linear-gradient(135deg, rgba(0, 255, 135, 0.1) 0%, rgba(9, 28, 24, 0.95) 100%);
         border: 1px solid rgba(0, 255, 135, 0.4);
         border-radius: 8px;
-        padding: 10px 14px;
-        margin-top: 8px;
-        margin-bottom: 8px;
+        padding: 8px 14px;
+        margin-top: 6px;
+        margin-bottom: 6px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(0, 255, 135, 0.06);
     }
 
