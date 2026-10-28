@@ -9,7 +9,7 @@ import streamlit as st
 import xgboost as xgb
 
 # -----------------------------------------------------------------------------
-# 1. PAGE CONFIG & FULL-SCREEN BALANCED HUD STYLING
+# 1. PAGE CONFIG & ZERO-SCROLL HUD STYLING
 # -----------------------------------------------------------------------------
 st.set_page_config(
     page_title="EV Powertrain Telemetry & Energy Predictor",
@@ -30,12 +30,12 @@ st.markdown(
         font-family: 'Chakra Petch', sans-serif !important;
     }
 
-    /* Container padding balanced to comfortably fit full screen */
+    /* Container padding balanced for a clean single-page layout */
     .block-container {
-        padding-top: 0.8rem !important;
-        padding-bottom: 0.8rem !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
+        padding-top: 0.6rem !important;
+        padding-bottom: 0.6rem !important;
+        padding-left: 1.2rem !important;
+        padding-right: 1.2rem !important;
         max-width: 100% !important;
     }
 
@@ -61,13 +61,13 @@ st.markdown(
         background: linear-gradient(90deg, rgba(0, 242, 254, 0.1) 0%, rgba(13, 22, 41, 0.8) 50%, rgba(0, 255, 135, 0.08) 100%);
         border: 1px solid rgba(0, 242, 254, 0.28);
         border-radius: 8px;
-        padding: 8px 20px;
-        margin-bottom: 14px;
-        box-shadow: 0 0 20px rgba(0, 242, 254, 0.08);
+        padding: 6px 18px;
+        margin-bottom: 10px;
+        box-shadow: 0 0 18px rgba(0, 242, 254, 0.08);
     }
 
     .hud-title-text {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         font-weight: 700;
         letter-spacing: 0.1em;
         color: #ffffff;
@@ -79,119 +79,121 @@ st.markdown(
 
     .hud-status-badge {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.76rem;
+        font-size: 0.74rem;
         color: #00ff87;
         background: rgba(0, 255, 135, 0.12);
-        padding: 3px 12px;
+        padding: 3px 10px;
         border-radius: 4px;
         border: 1px solid rgba(0, 255, 135, 0.35);
         letter-spacing: 0.06em;
     }
 
-    /* Master Column Panel Styling */
-    .hud-panel {
-        background: rgba(11, 18, 34, 0.75);
-        border: 1px solid rgba(0, 242, 254, 0.2);
-        border-radius: 10px;
-        padding: 14px 16px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-        min-height: 580px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
+    /* Master Column Panel Headers */
     .hud-panel-header {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 0.14em;
         color: #00f2fe;
         text-transform: uppercase;
         border-bottom: 1px solid rgba(0, 242, 254, 0.2);
-        padding-bottom: 6px;
-        margin-bottom: 12px;
+        padding-bottom: 4px;
+        margin-bottom: 8px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    /* Input Labels and Widgets */
+    /* Input Labels and Compact Spacing */
     .stSlider {
-        margin-bottom: 2px !important;
+        margin-bottom: 0px !important;
     }
 
     .stSlider > label {
-        font-size: 0.78rem !important;
+        font-size: 0.76rem !important;
         font-weight: 600 !important;
         color: #a4bede !important;
-        letter-spacing: 0.03em !important;
-        margin-bottom: 2px !important;
+        letter-spacing: 0.02em !important;
+        margin-bottom: -2px !important;
     }
 
     .stSelectbox {
-        margin-bottom: 4px !important;
-    }
-
-    .stSelectbox > label {
-        font-size: 0.78rem !important;
-        font-weight: 600 !important;
-        color: #a4bede !important;
         margin-bottom: 2px !important;
     }
 
-    .stRadio > label {
-        font-size: 0.78rem !important;
+    .stSelectbox > label {
+        font-size: 0.76rem !important;
         font-weight: 600 !important;
         color: #a4bede !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .stRadio > label {
+        font-size: 0.76rem !important;
+        font-weight: 600 !important;
+        color: #a4bede !important;
+        margin-bottom: 2px !important;
     }
 
     div[data-baseweb="select"] > div {
         background-color: #070d1a !important;
         border: 1px solid rgba(0, 242, 254, 0.35) !important;
         color: #ffffff !important;
-        font-size: 0.84rem !important;
-        min-height: 36px !important;
+        font-size: 0.82rem !important;
+        min-height: 34px !important;
         border-radius: 6px !important;
     }
 
-    /* Car Image Frame - Perfectly Centered */
+    /* Fixed-Height Centered Car Image Display */
     .car-display-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.09) 0%, rgba(6, 12, 24, 0.95) 75%);
+        background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.08) 0%, rgba(6, 12, 24, 0.95) 75%);
         border: 1px solid rgba(0, 242, 254, 0.25);
-        border-radius: 10px;
-        padding: 16px 12px;
-        margin: 10px 0 12px 0;
-        box-shadow: inset 0 0 25px rgba(0, 242, 254, 0.06);
+        border-radius: 8px;
+        padding: 6px 10px;
+        margin: 6px 0 8px 0;
+        height: 125px;
+        max-height: 125px;
+        box-sizing: border-box;
+        overflow: hidden;
     }
 
     .car-display-img {
         display: block;
         margin: 0 auto;
-        max-width: 270px;
-        width: 82%;
+        max-height: 112px;
+        max-width: 92%;
+        width: auto;
         height: auto;
         object-fit: contain;
-        filter: drop-shadow(0 0 14px rgba(0, 242, 254, 0.45));
+        filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.4));
         pointer-events: none;
         user-select: none;
     }
 
-    /* Chips */
+    /* Single-Line Telemetry Chips */
+    .hud-chips-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 8px;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+    }
+
     .hud-chip {
         display: inline-block;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.72rem;
-        padding: 4px 10px;
+        font-size: 0.68rem;
+        padding: 3px 8px;
         background: rgba(0, 242, 254, 0.08);
         border: 1px solid rgba(0, 242, 254, 0.25);
-        border-radius: 5px;
+        border-radius: 4px;
         color: #b0d2f8;
         font-weight: 600;
-        margin: 0 4px;
+        white-space: nowrap;
     }
 
     /* Result Metric Cards */
@@ -199,24 +201,24 @@ st.markdown(
         background: linear-gradient(135deg, rgba(0, 242, 254, 0.1) 0%, rgba(9, 18, 36, 0.95) 100%);
         border: 1px solid rgba(0, 242, 254, 0.4);
         border-radius: 8px;
-        padding: 12px 16px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(0, 242, 254, 0.06);
+        padding: 10px 14px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(0, 242, 254, 0.06);
     }
 
     .metric-card-accent {
         background: linear-gradient(135deg, rgba(0, 255, 135, 0.1) 0%, rgba(9, 28, 24, 0.95) 100%);
         border: 1px solid rgba(0, 255, 135, 0.4);
         border-radius: 8px;
-        padding: 12px 16px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 15px rgba(0, 255, 135, 0.06);
+        padding: 10px 14px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), inset 0 0 12px rgba(0, 255, 135, 0.06);
     }
 
     .metric-title {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         letter-spacing: 0.12em;
         font-weight: 700;
         color: #88a7ce;
@@ -226,7 +228,7 @@ st.markdown(
 
     .metric-value {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 1.85rem;
+        font-size: 1.75rem;
         font-weight: 800;
         color: #00f2fe;
         line-height: 1.15;
@@ -234,7 +236,7 @@ st.markdown(
 
     .metric-value-accent {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 1.85rem;
+        font-size: 1.75rem;
         font-weight: 800;
         color: #00ff87;
         line-height: 1.15;
@@ -242,19 +244,19 @@ st.markdown(
 
     .metric-sub {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.76rem;
+        font-size: 0.74rem;
         color: #9cb5d3;
-        margin-top: 3px;
+        margin-top: 2px;
     }
 
-    /* Simulation Control Buttons and Inputs */
+    /* Simulation Control Inputs and Sync Button */
     input[type="number"] {
         background-color: #080f1e !important;
         border: 1px solid rgba(0, 242, 254, 0.35) !important;
         color: #00f2fe !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-weight: 700 !important;
-        font-size: 0.88rem !important;
+        font-size: 0.85rem !important;
         border-radius: 5px !important;
     }
 
@@ -262,17 +264,17 @@ st.markdown(
         background: linear-gradient(90deg, #00f2fe, #00c3ff) !important;
         color: #040914 !important;
         font-weight: 700 !important;
-        font-size: 0.8rem !important;
-        letter-spacing: 0.06em !important;
+        font-size: 0.78rem !important;
+        letter-spacing: 0.05em !important;
         border: none !important;
         border-radius: 5px !important;
-        padding: 6px 12px !important;
+        padding: 5px 10px !important;
         width: 100% !important;
         box-shadow: 0 2px 10px rgba(0, 242, 254, 0.3) !important;
         transition: all 0.2s ease !important;
     }
     .stButton > button:hover {
-        box-shadow: 0 0 18px rgba(0, 242, 254, 0.7) !important;
+        box-shadow: 0 0 16px rgba(0, 242, 254, 0.7) !important;
         transform: translateY(-1px) !important;
     }
     </style>
@@ -281,7 +283,7 @@ st.markdown(
 )
 
 # -----------------------------------------------------------------------------
-# 2. CAR SCALABILITY DATABASE
+# 2. CAR SCALABILITY DATABASE (Configurable Presets with Custom Image Support)
 # -----------------------------------------------------------------------------
 car_database = {
     "Tata Nexon EV": {
@@ -289,24 +291,28 @@ car_database = {
         "max_payload_kg": 400,
         "battery_capacity_kwh": 30.2,
         "max_speed_kmh": 120,
+        "image": "nexon_ev.png",
     },
     "MG ZS EV": {
         "base_weight_kg": 1570,
         "max_payload_kg": 450,
         "battery_capacity_kwh": 50.3,
         "max_speed_kmh": 140,
+        "image": "mg_zs_ev.png",
     },
     "Tesla Model 3 (RWD)": {
         "base_weight_kg": 1610,
         "max_payload_kg": 430,
         "battery_capacity_kwh": 60.0,
         "max_speed_kmh": 200,
+        "image": "tesla_model3.png",
     },
     "Hyundai Ioniq 5": {
         "base_weight_kg": 1910,
         "max_payload_kg": 520,
         "battery_capacity_kwh": 72.6,
         "max_speed_kmh": 185,
+        "image": "ioniq5.png",
     },
 }
 
@@ -435,13 +441,10 @@ model = load_ev_model("xgboost_ev_model.pkl")
 
 # Helper to load and encode image to Base64
 def get_image_base64(filepath):
-    if os.path.exists(filepath):
+    if filepath and os.path.exists(filepath):
         with open(filepath, "rb") as f:
             return base64.b64encode(f.read()).decode("utf-8")
     return None
-
-car_image_path = "edited-image.png" if os.path.exists("edited-image.png") else "car_image.png"
-car_b64 = get_image_base64(car_image_path)
 
 # -----------------------------------------------------------------------------
 # 4. TOP HUD TELEMETRY HEADER
@@ -462,7 +465,7 @@ st.markdown(
 # -----------------------------------------------------------------------------
 # 5. STRICT 3-COLUMN BALANCED GRID
 # -----------------------------------------------------------------------------
-col_left, col_center, col_right = st.columns([1.1, 1.1, 1.15], gap="medium")
+col_left, col_center, col_right = st.columns([1.15, 1.1, 1.15], gap="medium")
 
 # =============================================================================
 # CENTER COLUMN (THE VEHICLE HUD & ARCHITECTURE)
@@ -487,21 +490,34 @@ with col_center:
     )
     car_specs = car_database[selected_car_name]
 
-    # 2. Centered Car Silhouette without any extra boxes or fullscreen buttons
+    # Resolve Car Image: Car-specific image if present, else fallback to default assets
+    car_img_target = car_specs.get("image")
+    if car_img_target and os.path.exists(car_img_target):
+        active_car_img_path = car_img_target
+    elif os.path.exists("edited-image.png"):
+        active_car_img_path = "edited-image.png"
+    elif os.path.exists("car_image.png"):
+        active_car_img_path = "car_image.png"
+    else:
+        active_car_img_path = None
+
+    car_b64 = get_image_base64(active_car_img_path)
+
+    # 2. Centered Car Silhouette with Fixed 125px Height
     if car_b64:
         st.markdown(
             f"""
             <div class="car-display-container">
-                <img src="data:image/png;base64,{car_b64}" class="car-display-img" alt="Vehicle Top View" />
+                <img src="data:image/png;base64,{car_b64}" class="car-display-img" alt="{selected_car_name}" />
             </div>
             """,
             unsafe_allow_html=True,
         )
 
-    # Telemetry Specs Chips
+    # 3. Single-Line Telemetry Specs Chips
     st.markdown(
         f"""
-        <div style="text-align: center; margin-bottom: 14px;">
+        <div class="hud-chips-row">
             <span class="hud-chip">BATT: {car_specs['battery_capacity_kwh']} kWh</span>
             <span class="hud-chip">BASE: {car_specs['base_weight_kg']} kg</span>
             <span class="hud-chip">V-MAX: {car_specs['max_speed_kmh']} km/h</span>
@@ -510,18 +526,34 @@ with col_center:
         unsafe_allow_html=True,
     )
 
-    # 3. Payload Slider & Weight Calculation
+    # 4. Inline Payload & Total Weight Header
+    # Pre-read current payload from session state or default
+    current_payload_preview = st.session_state.get("slider_payload", 75)
+    current_total_weight = car_specs["base_weight_kg"] + current_payload_preview
+
+    st.markdown(
+        f"""
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; margin-bottom: 2px;">
+            <span style="font-size: 0.76rem; font-weight: 600; color: #a4bede;">PAYLOAD WEIGHT (KG)</span>
+            <span style="font-size: 0.74rem; font-family: 'JetBrains Mono', monospace; color: #8ba2c4;">TOTAL: <strong style="color: #00f2fe; font-size: 0.82rem;">{current_total_weight} kg</strong></span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
     payload_kg = st.slider(
-        "Payload Weight (kg)",
+        "Payload Weight Slider",
         min_value=0,
         max_value=int(car_specs["max_payload_kg"]),
-        value=75,
+        value=min(current_payload_preview, int(car_specs["max_payload_kg"])),
         step=5,
+        key="slider_payload",
+        label_visibility="collapsed",
         help="Passenger + Luggage payload added to base vehicle curb weight.",
     )
     total_vehicle_weight_kg = car_specs["base_weight_kg"] + payload_kg
 
-    # 4. Driving Mode (1=Eco, 2=Normal, 3=Sport)
+    # 5. Driving Mode (1=Eco, 2=Normal, 3=Sport)
     driving_mode_str = st.radio(
         "Powertrain Mode",
         options=["Eco", "Normal", "Sport"],
@@ -532,17 +564,8 @@ with col_center:
     driving_mode_map = {"Eco": 1, "Normal": 2, "Sport": 3}
     driving_mode_val = driving_mode_map[driving_mode_str]
 
-    st.markdown(
-        f"""
-        <div style="font-size: 0.78rem; color: #8ba2c4; text-align: center; margin-top: 14px; padding: 6px; background: rgba(0, 242, 254, 0.05); border: 1px solid rgba(0, 242, 254, 0.15); border-radius: 6px;">
-            TOTAL VEHICLE CURB WEIGHT: <strong style="color: #00f2fe; font-size: 0.9rem;">{total_vehicle_weight_kg} kg</strong>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
 # =============================================================================
-# LEFT COLUMN (TELEMETRY & ENVIRONMENT)
+# LEFT COLUMN (TELEMETRY & ENVIRONMENT — ALL 10 INPUTS)
 # =============================================================================
 with col_left:
     st.markdown(
@@ -555,7 +578,7 @@ with col_left:
         unsafe_allow_html=True,
     )
 
-    # Paired Sub-Columns with comfortable spacing
+    # Row 1: Speed & Acceleration
     r1_c1, r1_c2 = st.columns(2)
     with r1_c1:
         speed_kmh = st.slider(
@@ -575,6 +598,7 @@ with col_left:
             help="Positive = acceleration, Negative = regenerative braking.",
         )
 
+    # Row 2: Temperature & Slope
     r2_c1, r2_c2 = st.columns(2)
     with r2_c1:
         temp_c = st.slider(
@@ -594,6 +618,7 @@ with col_left:
             help="Grade percentage: positive for uphill, negative for downhill.",
         )
 
+    # Row 3: Tire Pressure & Road Type
     r3_c1, r3_c2 = st.columns(2)
     with r3_c1:
         tire_psi = st.slider(
@@ -611,6 +636,7 @@ with col_left:
         )
         road_type_val = 1 if road_type_str == "Highway" else 2
 
+    # Row 4: Weather & Traffic
     r4_c1, r4_c2 = st.columns(2)
     with r4_c1:
         weather_str = st.selectbox(
@@ -629,18 +655,26 @@ with col_left:
         traffic_map = {"Light": 1, "Moderate": 2, "Heavy": 3}
         traffic_val = traffic_map[traffic_str]
 
-    # Neutral realistic physics defaults for auxiliary features (Not shown in UI)
-    humidity_val = 50.0
-    wind_speed_val = 3.0
-
-    st.markdown(
-        """
-        <div style="margin-top: 18px; padding: 10px; background: rgba(0, 242, 254, 0.04); border: 1px dashed rgba(0, 242, 254, 0.2); border-radius: 6px; font-size: 0.74rem; color: #8ba2c4; text-align: center;">
-            ENVIRONMENTAL TELEMETRY: REAL-TIME SENSING ACTIVE
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    # Row 5: Humidity & Wind Speed (Direct ML Input Features)
+    r5_c1, r5_c2 = st.columns(2)
+    with r5_c1:
+        humidity_val = st.slider(
+            "Humidity (%)",
+            min_value=20,
+            max_value=100,
+            value=50,
+            step=1,
+            help="Relative atmospheric humidity percentage.",
+        )
+    with r5_c2:
+        wind_speed_val = st.slider(
+            "Wind Speed (m/s)",
+            min_value=0.0,
+            max_value=20.0,
+            value=3.0,
+            step=0.5,
+            help="Ambient aerodynamic wind velocity.",
+        )
 
 # =============================================================================
 # RIGHT COLUMN (BATTERY STATE & ML RESULTS / TWO-WAY ESTIMATOR)
@@ -688,8 +722,8 @@ with col_right:
         battery_voltage_v = round(320.0 + ((battery_soc - 10) / 90.0) * 80.0, 1)
         st.markdown(
             f"""
-            <div style="margin-top: 14px; padding: 6px 10px; background: rgba(0, 242, 254, 0.07); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 6px; text-align: center;">
-                <div style="font-size: 0.68rem; color: #8ba2c4; letter-spacing: 0.08em;">PACK VOLTAGE</div>
+            <div style="margin-top: 14px; padding: 5px 8px; background: rgba(0, 242, 254, 0.07); border: 1px solid rgba(0, 242, 254, 0.25); border-radius: 6px; text-align: center;">
+                <div style="font-size: 0.66rem; color: #8ba2c4; letter-spacing: 0.08em;">PACK VOLTAGE</div>
                 <div style="font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 700; color: #00f2fe;">{battery_voltage_v} V</div>
             </div>
             """,
@@ -775,6 +809,8 @@ with col_right:
         weather_val,
         temp_c,
         tire_psi,
+        humidity_val,
+        wind_speed_val,
     ))
     if st.session_state.last_ml_hash != current_inputs_hash:
         st.session_state.override_consumption_kwh = round(ml_predicted_kwh, 2)
