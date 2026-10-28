@@ -105,7 +105,11 @@ st.markdown(
 
     /* Comfortable Widget Spacing to fill vertical space nicely */
     .stSlider {
-        margin-bottom: 6px !important;
+        margin-bottom: 4px !important;
+    }
+
+    div[data-testid="stSlider"] {
+        margin-bottom: -6px !important;
     }
 
     .stSlider > label {
@@ -117,7 +121,7 @@ st.markdown(
     }
 
     .stSelectbox {
-        margin-bottom: 4px !important;
+        margin-bottom: 3px !important;
     }
 
     .stSelectbox > label {
@@ -127,11 +131,16 @@ st.markdown(
         margin-bottom: 0px !important;
     }
 
+    div[data-testid="stRadio"] {
+        margin-top: -6px !important;
+        margin-bottom: -6px !important;
+    }
+
     .stRadio > label {
         font-size: 0.77rem !important;
         font-weight: 600 !important;
         color: #a4bede !important;
-        margin-bottom: 2px !important;
+        margin-bottom: 0px !important;
     }
 
     div[data-baseweb="select"] > div {
@@ -139,11 +148,11 @@ st.markdown(
         border: 1px solid rgba(0, 242, 254, 0.35) !important;
         color: #ffffff !important;
         font-size: 0.83rem !important;
-        min-height: 35px !important;
+        min-height: 34px !important;
         border-radius: 6px !important;
     }
 
-    /* Prominent Centered Car Display */
+    /* Prominent Centered Car Display (Calibrated to 185px) */
     .car-display-container {
         display: flex;
         justify-content: center;
@@ -151,10 +160,10 @@ st.markdown(
         background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.09) 0%, rgba(6, 12, 24, 0.95) 75%);
         border: 1px solid rgba(0, 242, 254, 0.25);
         border-radius: 8px;
-        padding: 6px 10px;
-        margin: 4px 0 8px 0;
-        height: 215px;
-        max-height: 215px;
+        padding: 4px 8px;
+        margin: 2px 0 6px 0;
+        height: 185px;
+        max-height: 185px;
         box-sizing: border-box;
         overflow: hidden;
     }
@@ -162,8 +171,8 @@ st.markdown(
     .car-display-img {
         display: block;
         margin: 0 auto;
-        max-height: 200px;
-        max-width: 96%;
+        max-height: 175px;
+        max-width: 95%;
         width: auto;
         height: auto;
         object-fit: contain;
@@ -178,7 +187,7 @@ st.markdown(
         justify-content: center;
         align-items: center;
         gap: 6px;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         white-space: nowrap;
         flex-wrap: nowrap;
     }
@@ -186,8 +195,8 @@ st.markdown(
     .hud-chip {
         display: inline-block;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.72rem;
-        padding: 3px 10px;
+        font-size: 0.71rem;
+        padding: 2px 8px;
         background: rgba(0, 242, 254, 0.08);
         border: 1px solid rgba(0, 242, 254, 0.25);
         border-radius: 4px;
@@ -196,14 +205,14 @@ st.markdown(
         white-space: nowrap;
     }
 
-    /* Telemetry Info Cards for Lower Columns */
+    /* Telemetry Info Cards for Lower Columns (Compact & Aligned) */
     .telemetry-footer-card {
         background: rgba(0, 242, 254, 0.04);
         border: 1px solid rgba(0, 242, 254, 0.18);
         border-radius: 6px;
-        padding: 8px 12px;
-        margin-top: 10px;
-        font-size: 0.73rem;
+        padding: 5px 10px;
+        margin-top: 2px;
+        font-size: 0.72rem;
         color: #8da4c4;
     }
 
@@ -556,9 +565,9 @@ with col_center:
 
     st.markdown(
         f"""
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; margin-bottom: 2px;">
-            <span style="font-size: 0.76rem; font-weight: 600; color: #a4bede;">PAYLOAD (KG)</span>
-            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: #8ba2c4;">TOTAL: <strong style="color: #00f2fe; font-size: 0.82rem;">{current_total_weight} kg</strong></span>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 1px; margin-bottom: 0px;">
+            <span style="font-size: 0.75rem; font-weight: 600; color: #a4bede;">PAYLOAD (KG)</span>
+            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; color: #8ba2c4;">TOTAL: <strong style="color: #00f2fe; font-size: 0.8rem;">{current_total_weight} kg</strong></span>
         </div>
         """,
         unsafe_allow_html=True,
@@ -576,12 +585,21 @@ with col_center:
     )
     total_vehicle_weight_kg = car_specs["base_weight_kg"] + payload_kg
 
-    # 5. Driving Mode (1=Eco, 2=Normal, 3=Sport)
+    # 5. Driving Mode (Compact with tight spacing)
+    st.markdown(
+        """
+        <div style="font-size: 0.75rem; font-weight: 600; color: #a4bede; margin-top: 2px; margin-bottom: -2px;">
+            POWERTRAIN MODE
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     driving_mode_str = st.radio(
         "Powertrain Mode",
         options=["Eco", "Normal", "Sport"],
         index=1,
         horizontal=True,
+        label_visibility="collapsed",
         help="Adjusts throttle map, regenerative braking, and auxiliary draw.",
     )
     driving_mode_map = {"Eco": 1, "Normal": 2, "Sport": 3}
@@ -594,7 +612,7 @@ with col_center:
         "Sport": "Instant Peak Torque | Aggressive Draw",
     }
 
-    # Center Column Bottom Telemetry Status Card (Balances height)
+    # Center Column Bottom Telemetry Status Card (Compact & Perfectly Aligned)
     st.markdown(
         f"""
         <div class="telemetry-footer-card">
@@ -602,11 +620,11 @@ with col_center:
                 <span>CHASSIS & POWERTRAIN PROFILE</span>
                 <span style="color: #00ff87;">LOAD: {payload_utilization_pct:.0f}%</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;">
+            <div style="display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 0.71rem;">
                 <span>CURB MASS: <strong style="color: #00f2fe;">{total_vehicle_weight_kg} kg</strong></span>
                 <span style="color: #a0c2e6;">MAP: <strong style="color: #00ff87;">{driving_mode_str.upper()}</strong></span>
             </div>
-            <div style="font-size: 0.68rem; color: #738ca8; margin-top: 2px;">
+            <div style="font-size: 0.67rem; color: #738ca8; margin-top: 1px;">
                 {mode_descriptions[driving_mode_str]}
             </div>
         </div>
